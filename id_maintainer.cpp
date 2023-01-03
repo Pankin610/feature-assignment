@@ -1,5 +1,7 @@
 #include "id_maintainer.h"
 
+#include <stdexcept>
+
 int IdMaintainer::addId() {
   int new_id = last_id_++;
   available_ids_.insert(new_id);

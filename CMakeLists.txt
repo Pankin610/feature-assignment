@@ -16,15 +16,20 @@ FetchContent_MakeAvailable(gtest)
 
 enable_testing()
 
+add_library(id_maintainer SHARED id_maintainer.cpp id_maintainer.h)
+add_library(feature_maintainer SHARED feature_maintainer.cpp feature_maintainer.h)
+
 add_executable(
   unit_tests
-  feature_maintainer_test.cpp
   binary_maintainer_test.cpp
+  feature_maintainer_test.cpp
 )
 
 target_link_libraries(
   unit_tests
   gtest_main
+  id_maintainer
+  feature_maintainer
 )
 
 include(GoogleTest)

@@ -6,6 +6,7 @@
 #include "id_maintainer.h"
 #include <set>
 #include <queue>
+#include <string>
 
 class FeatureMaintainer {
  public:
