@@ -11,7 +11,19 @@ class State;
 class Action {
  public:
   virtual void apply(State& state) = 0;
-  virtual ~Action() {};
+  virtual ~Action() {}
+};
+
+class EngineerAction : public Action {
+ public:
+  EngineerAction(engineer_id_t eng_id) :
+    eng_id_(eng_id) {}
+
+  virtual std::string toString(State& state) const = 0;
+  virtual ~EngineerAction() {}
+
+ protected:
+  engineer_id_t eng_id_;
 };
 
 class ImplementFeatureAction : public Action {
@@ -29,17 +41,17 @@ class ImplementFeatureAction : public Action {
   int time_done_;
 };
 
-class StartImplementingFeatureAction : public Action {
+class StartImplementingFeatureAction : public EngineerAction {
  public:
   StartImplementingFeatureAction(engineer_id_t eng_id, feature_id_t feature_id, binary_id_t bin_id) :
-    eng_id_(eng_id),
+    EngineerAction(eng_id),
     feature_id_(feature_id),
     bin_id_(bin_id) {}
     
   void apply(State& state) override;
+  std::string toString(State& state) const override;
 
  private:
-  engineer_id_t eng_id_;
   feature_id_t feature_id_;
   binary_id_t bin_id_;
 };

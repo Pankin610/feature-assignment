@@ -1,6 +1,7 @@
 #include "action.h"
 
 #include <memory>
+#include <sstream>
 
 void ImplementFeatureAction::apply(State& state) {
   Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
@@ -23,6 +24,15 @@ void StartImplementingFeatureAction::apply(State& state) {
     time_when_done, 
     std::make_unique<ImplementFeatureAction>(feature_id_, bin_id_, time_when_done)
   );
+}
+
+std::string StartImplementingFeatureAction::toString(State& state) const {
+  std::string feature_name = state.featureMaintainer().getFeature(feature_id_).name();
+  std::stringstream ss;
+  ss << "impl ";
+  ss << feature_name;
+  ss << " " << bin_id_;
+  return ss.str();
 }
 
 void EngineerSleepAction::apply(State& state) {
