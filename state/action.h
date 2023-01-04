@@ -4,26 +4,29 @@
 #include "state.h"
 #include "feature.h"
 #include "types.h"
+#include <memory>
 
 class State;
 
 class Action {
  public:
   virtual void apply(State& state) = 0;
-  virtual ~Action() = 0;
+  virtual ~Action() {};
 };
 
 class ImplementFeatureAction : public Action {
  public:
-  ImplementFeatureAction(feature_id_t feature_id, binary_id_t bin_id) :
+  ImplementFeatureAction(feature_id_t feature_id, binary_id_t bin_id, int time_done) :
     feature_id_(feature_id),
-    bin_id_(bin_id) {}
+    bin_id_(bin_id),
+    time_done_(time_done) {}
     
   void apply(State& state) override;
 
  private:
   feature_id_t feature_id_;
   binary_id_t bin_id_;
+  int time_done_;
 };
 
 class StartImplementingFeatureAction : public Action {

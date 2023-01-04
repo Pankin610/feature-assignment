@@ -7,6 +7,7 @@
 #include "event_queue.h"
 #include "action.h"
 #include <istream>
+#include <memory>
 
 class Action;
 
@@ -50,12 +51,20 @@ class State {
     return cur_score_;
   }
 
+  int& score() {
+    return cur_score_;
+  }
+
   int timeToMakeBin() const {
     return binary_creation_time_;
   }
 
   int curTime() const {
     return cur_time_;
+  }
+
+  int timeLimit() const {
+    return time_limit_;
   }
 
   void countImplementedFeature(feature_id_t id);

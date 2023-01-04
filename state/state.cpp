@@ -67,7 +67,3 @@ void State::processScheduledActions() {
 void State::scheduleAction(int time, std::unique_ptr<Action> action) {
   scheduled_actions_.addEvent(time, std::move(action));
 }
-
-void State::countImplementedFeature(feature_id_t id) {
-  cur_score_ += featureMaintainer().getFeature(id).users() * std::max<int>(0, time_limit_);
-}

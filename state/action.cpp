@@ -5,7 +5,8 @@
 void ImplementFeatureAction::apply(State& state) {
   Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
   if (state.featureMaintainer().implementInBinary(feature_id_, binary)) {
-    state.countImplementedFeature(feature_id_);
+    int time_in_prod = std::max<int>(0, state.timeLimit() - time_done_);
+    state.score() += state.featureMaintainer().getFeature(feature_id_).users() * time_in_prod;
   }
 }
 
@@ -17,9 +18,10 @@ void StartImplementingFeatureAction::apply(State& state) {
     binary.services().size();
 
   state.engineerMaintainer().suspendId(eng_id_, duration);
+  int time_when_done = state.curTime() + duration;
   state.scheduleAction(
-    state.curTime() + duration, 
-    std::make_unique<ImplementFeatureAction>(feature_id_, bin_id_)
+    time_when_done, 
+    std::make_unique<ImplementFeatureAction>(feature_id_, bin_id_, time_when_done)
   );
 }
 
