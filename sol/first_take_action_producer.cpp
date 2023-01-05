@@ -5,6 +5,7 @@ AccumulateAction<EngineerAction> FirstTakeActionProducer::getNextAction(State& s
   auto available_engineers = state.engineerMaintainer().getAvailableIds();
   for (engineer_id_t eng : available_engineers) {
     auto action = takeFirstActionForEngineer(eng, state);
+    action->apply(state);
     accum_action.addAction(std::move(action));
   }
   return accum_action;
@@ -16,7 +17,7 @@ std::unique_ptr<EngineerAction> FirstTakeActionProducer::takeFirstActionForEngin
   for (feature_id_t feature_id : state.featureMaintainer().getUnimplementedFeatures()) {
     std::set<binary_id_t> binaries = state.binariesForFeature(feature_id);
     for (binary_id_t bin_id : binaries) {
-      if (state.featuresInProgress().find(std::make_pair(feature_id, bin_id)) == 
+      if (state.featuresInProgress().find(std::make_pair(feature_id, bin_id)) != 
           state.featuresInProgress().end()) {
         continue;
       }

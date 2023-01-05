@@ -8,22 +8,28 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(gtest)
 
+link_directories(sol)
+link_directories(state)
 
 add_executable(
   unit_tests
   binary_maintainer_test.cpp
   feature_maintainer_test.cpp
   state_test.cpp
+  producer_based_solver_test.cpp
 )
 
-find_library(MYLIB_LIBRARY id_maintainer)
 target_link_libraries(
   unit_tests 
   gtest_main
   id_maintainer
   feature_maintainer
   state
-  problem_data)
+  problem_data
+  solution
+  first_take_action_producer
+  producer_based_solver
+  solver_interface)
 
 # automatic discovery of unit tests
 include(GoogleTest)

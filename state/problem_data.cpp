@@ -1,5 +1,7 @@
 #include "problem_data.h"
 
+#include <iostream>
+
 ProblemData::ProblemData(std::istream& input) {
   input >> time_limit_;
   input >> eng_count_;
@@ -22,7 +24,7 @@ void ProblemData::readServices(std::istream& input) {
     input >> bin_id;
 
     service_id_t id = service_maintainer_.addByName(name);
-    binary_maintainer_.getBinary(bin_id).services().insert(id);
+    binary_maintainer_.addService(bin_id, id);
   }
 }
 

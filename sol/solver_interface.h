@@ -7,7 +7,7 @@
 
 class SolverInterface {
  public:
-  virtual std::unique_ptr<Solution> solve(std::shared_ptr<ProblemData> data);
+  virtual std::unique_ptr<Solution> solve(std::shared_ptr<ProblemData> data) = 0;
   virtual ~SolverInterface() {}
 };
 

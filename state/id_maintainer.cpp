@@ -46,6 +46,7 @@ bool IdMaintainer::isAvailable(int id) const {
 }
 
 void IdMaintainer::advanceTime(int days) {
+  cur_time_ += days;
   add_id_event_q_.advanceTime(days);
   goThroughEvents();
 }

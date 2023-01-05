@@ -26,6 +26,11 @@ class BinaryMaintainer {
     return binary_by_id_[id];
   }
 
+  void addService(binary_id_t bin_id, service_id_t service_id) {
+    binary_for_service_[service_id] = bin_id;
+    getBinary(bin_id).services().insert(service_id);
+  }
+
   binary_id_t getBinaryIdForService(service_id_t service) const {
     return binary_for_service_.at(service);
   }
@@ -69,6 +74,10 @@ class BinaryMaintainer {
 
   void advanceTime(int days = 1) {
     id_maintainer_.advanceTime(days);
+  }
+
+  int numBinaries() const {
+    return id_maintainer_.numIds();
   }
 
  private:

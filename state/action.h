@@ -124,7 +124,7 @@ class AccumulateAction : public Action {
     }
   }
 
-  const std::vector<std::unique_ptr<ActionType>>& actions() const {
+  std::vector<std::unique_ptr<ActionType>>& actions() {
     return actions_;
   }
 
