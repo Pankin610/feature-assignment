@@ -16,7 +16,12 @@ int IdMaintainer::addByName(const std::string& name) {
 
   int new_id = addId();
   id_by_name_[name] = new_id;
+  name_by_id_[new_id] = name;
   return new_id;
+}
+
+std::string IdMaintainer::getName(int id) const {
+  return name_by_id_.at(id);
 }
 
 void IdMaintainer::removeId(int id) {

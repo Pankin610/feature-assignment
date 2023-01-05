@@ -4,6 +4,7 @@
 #include <string>
 #include <queue>
 #include <unordered_map>
+#include <optional>
 
 #include "types.h"
 #include "event_queue.h"
@@ -29,12 +30,19 @@ class IdMaintainer {
 
   void advanceTime(int days = 1);
 
+  std::string getName(int id) const;
+
+  int numIds() const {
+    return last_id_;
+  }
+
  private:
   void goThroughEvents();
 
   int cur_time_;
   id_container_t available_ids_;
   std::unordered_map<std::string, int> id_by_name_;
+  std::unordered_map<int, std::string> name_by_id_;
   int last_id_;
   EventQueue<int> add_id_event_q_;
 };

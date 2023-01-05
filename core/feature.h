@@ -7,8 +7,7 @@
 
 class Feature {
  public:
-  Feature(std::string name, feature_id_t id, int difficulty, int users) : 
-    name_(std::move(name)),
+  Feature(feature_id_t id, int difficulty, int users) : 
     id_(id),
     difficulty_(difficulty),
     users_(users) {}
@@ -29,12 +28,11 @@ class Feature {
     return services_;
   }
 
-  const std::string& name() const {
-    return name_;
+  const id_container_t& services() const {
+    return services_;
   }
-  
+
  private:
-  std::string name_;
   feature_id_t id_;
   int difficulty_;
   int users_;

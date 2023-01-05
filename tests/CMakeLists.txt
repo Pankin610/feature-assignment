@@ -23,7 +23,7 @@ target_link_libraries(
   id_maintainer
   feature_maintainer
   state
-  action)
+  problem_data)
 
 # automatic discovery of unit tests
 include(GoogleTest)

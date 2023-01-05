@@ -4,6 +4,7 @@
 #include "state.h"
 #include "feature.h"
 #include "types.h"
+#include "problem_data.h"
 #include <memory>
 
 class State;
@@ -19,7 +20,11 @@ class EngineerAction : public Action {
   EngineerAction(engineer_id_t eng_id) :
     eng_id_(eng_id) {}
 
-  virtual std::string toString(State& state) const = 0;
+  engineer_id_t getEngId() const {
+    return eng_id_;
+  }
+
+  virtual std::string toString() const = 0;
   virtual ~EngineerAction() {}
 
  protected:
@@ -43,59 +48,88 @@ class ImplementFeatureAction : public Action {
 
 class StartImplementingFeatureAction : public EngineerAction {
  public:
-  StartImplementingFeatureAction(engineer_id_t eng_id, feature_id_t feature_id, binary_id_t bin_id) :
-    EngineerAction(eng_id),
-    feature_id_(feature_id),
-    bin_id_(bin_id) {}
+  StartImplementingFeatureAction(
+    engineer_id_t eng_id, 
+    feature_id_t feature_id, 
+    binary_id_t bin_id, 
+    std::shared_ptr<ProblemData> data
+  ) : EngineerAction(eng_id),
+      feature_id_(feature_id),
+      bin_id_(bin_id),
+      data_(std::move(data)) {}
     
   void apply(State& state) override;
-  std::string toString(State& state) const override;
+  std::string toString() const override;
 
  private:
   feature_id_t feature_id_;
   binary_id_t bin_id_;
+  std::shared_ptr<ProblemData> data_;
 };
 
-class EngineerSleepAction : public Action {
+class EngineerSleepAction : public EngineerAction {
  public:
   EngineerSleepAction(engineer_id_t eng_id, int duration = 1) :
-    eng_id_(eng_id),
+    EngineerAction(eng_id),
     duration_(duration) {}
 
   void apply(State& state) override;
+  std::string toString() const override;
 
  private:
-  engineer_id_t eng_id_;
   int duration_;
 };
 
-class MoveServiceAction : public Action {
+class MoveServiceAction : public EngineerAction {
  public:
-  MoveServiceAction(engineer_id_t eng_id, service_id_t service_id, binary_id_t bin_id) :
-    eng_id_(eng_id),
-    service_id_(service_id),
-    bin_id_(bin_id) {}
+  MoveServiceAction(
+    engineer_id_t eng_id, 
+    service_id_t service_id, 
+    binary_id_t bin_id,
+    std::shared_ptr<ProblemData> data
+  ) : EngineerAction(eng_id),
+      service_id_(service_id),
+      bin_id_(bin_id),
+      data_(std::move(data)) {}
 
   void apply(State& state) override;
+  std::string toString() const override;
 
  private:
-  engineer_id_t eng_id_;
   service_id_t service_id_;
   binary_id_t bin_id_;
+  std::shared_ptr<ProblemData> data_;
 };
 
+class CreateBinaryAction : public EngineerAction {
+ public:
+  CreateBinaryAction(engineer_id_t eng_id) : EngineerAction(eng_id) {}
+
+  void apply(State& state) override;
+  std::string toString() const override;
+};
+
+template<typename ActionType>
 class AccumulateAction : public Action {
  public:
   AccumulateAction() = default;
 
-  void addAction(std::unique_ptr<Action> action) {
+  void addAction(std::unique_ptr<ActionType> action) {
     actions_.emplace_back(std::move(action));
   }
 
-  void apply(State& state) override;
+  void apply(State& state) override {
+    for (const auto& action : actions_) {
+      action->apply(state);
+    }
+  }
+
+  const std::vector<std::unique_ptr<ActionType>>& actions() const {
+    return actions_;
+  }
 
  private:
-  std::vector<std::unique_ptr<Action>> actions_;
+  std::vector<std::unique_ptr<ActionType>> actions_;
 };
 
 #endif

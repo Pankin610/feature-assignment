@@ -2,20 +2,21 @@
 
 #include "state.h"
 #include "action.h"
+#include "problem_data.h"
 #include <string>
 
 TEST(StateTests, BasicTest) {
-  State state(
+  State state(std::make_shared<ProblemData>(
     /*time_limit=*/100, 
     /*eng_count=*/10, 
     /*binary_count=*/10, 
-    /*binary_creation_time=*/10);
+    /*binary_creation_time=*/10));
   feature_id_t feature_id = state.featureMaintainer().addFeature("f", 5, 5);
   service_id_t service_id = state.serviceMaintainer().addByName("s");
   state.featureMaintainer().getFeature(feature_id).services().insert(service_id);
   state.binaryMaintainer().getBinary(0).services().insert(service_id);
 
-  StartImplementingFeatureAction action(0, feature_id, 0);
+  StartImplementingFeatureAction action(0, feature_id, 0, state.problemData());
   action.apply(state);
   state.advanceTime(3);
   EXPECT_EQ(state.score(), 0);
@@ -24,11 +25,11 @@ TEST(StateTests, BasicTest) {
 }
 
 TEST(StateTests, TestFromStatement) {
-  State state(
+  State state(std::make_shared<ProblemData>(
     /*time_limit=*/100, 
     /*eng_count=*/2, 
     /*binary_count=*/3, 
-    /*binary_creation_time=*/10);
+    /*binary_creation_time=*/10));
   feature_id_t foo_id = state.featureMaintainer().addFeature("foo", 1, 1);
   feature_id_t bar_id = state.featureMaintainer().addFeature("bar", 10, 1);
   Feature& foo = state.featureMaintainer().getFeature(foo_id);
@@ -55,11 +56,13 @@ TEST(StateTests, TestFromStatement) {
   StartImplementingFeatureAction action1(
     /*eng_id=*/0, 
     /*feature_id=*/foo_id, 
-    /*bin_id=*/2);
+    /*bin_id=*/2,
+    /*data=*/state.problemData());
   StartImplementingFeatureAction action2(
     /*eng_id=*/1, 
     /*feature_id=*/bar_id, 
-    /*bin_id=*/1);
+    /*bin_id=*/1,
+    /*data=*/state.problemData());
   action1.apply(state);
   action2.apply(state);
   EXPECT_FALSE(state.engineerMaintainer().isAvailable(0));
@@ -75,7 +78,8 @@ TEST(StateTests, TestFromStatement) {
   StartImplementingFeatureAction action3(
     /*eng_id=*/0,
     /*feature_id=*/bar_id,
-    /*bin_id=*/2);
+    /*bin_id=*/2,
+    /*data=*/state.problemData());
   action3.apply(state);
 
   int time_for_bar = std::max<int>(
@@ -96,7 +100,11 @@ TEST(StateTests, TestFromStatement) {
 }
 
 TEST(StateTests, EngineerSleepTest) {
-  State state(100, 10, 10, 10);
+  State state(std::make_shared<ProblemData>(
+    /*time_limit=*/100, 
+    /*eng_count=*/10, 
+    /*binary_count=*/10, 
+    /*binary_creation_time=*/10));
   EXPECT_TRUE(state.engineerMaintainer().isAvailable(0));
 
   EngineerSleepAction action(0, 5);
@@ -104,4 +112,3 @@ TEST(StateTests, EngineerSleepTest) {
 
   EXPECT_FALSE(state.engineerMaintainer().isAvailable(0));
 }
-

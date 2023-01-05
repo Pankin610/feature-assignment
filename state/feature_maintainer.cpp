@@ -2,7 +2,7 @@
 
 feature_id_t FeatureMaintainer::addFeature(const std::string& name, int difficulty, int users) {
   feature_id_t id = getFeatureId(name);
-  feature_by_id_.emplace_back(name, id, difficulty, users);
+  feature_by_id_.emplace_back(id, difficulty, users);
   return id;
 }
 

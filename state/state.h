@@ -6,6 +6,8 @@
 #include "types.h"
 #include "event_queue.h"
 #include "action.h"
+#include "problem_data.h"
+
 #include <istream>
 #include <memory>
 
@@ -17,13 +19,9 @@ class State {
     return State(input);
   }
 
-  State(int time_limit, int eng_count, int binary_count, int binary_creation_time) :
-    time_limit_(time_limit),
-    eng_count_(eng_count),
-    binary_count_(binary_count),
-    binary_creation_time_(binary_creation_time),
-    binary_maintainer_(binary_count),
-    engineer_maintainer_(eng_count) {}
+  State(std::shared_ptr<ProblemData> data) : data_(std::move(data)) {
+    copyFromData();
+  }
 
   void advanceTime(int t = 1);
 
@@ -43,8 +41,24 @@ class State {
     return service_maintainer_;
   }
 
+  const BinaryMaintainer& binaryMaintainer() const {
+    return binary_maintainer_;
+  }
+
+  const FeatureMaintainer& featureMaintainer() const {
+    return feature_maintainer_;
+  }
+
+  const IdMaintainer& engineerMaintainer() const {
+    return engineer_maintainer_;
+  }
+
+  const IdMaintainer& serviceMaintainer() const {
+    return service_maintainer_;
+  }
+
   bool isFinished() const {
-    return cur_time_ >= time_limit_;
+    return cur_time_ >= data_->timeLimit();
   }
 
   int score() const {
@@ -56,7 +70,7 @@ class State {
   }
 
   int timeToMakeBin() const {
-    return binary_creation_time_;
+    return data_->timeToMakeBin();
   }
 
   int curTime() const {
@@ -64,32 +78,41 @@ class State {
   }
 
   int timeLimit() const {
-    return time_limit_;
+    return data_->timeLimit();
   }
 
   void countImplementedFeature(feature_id_t id);
 
   void scheduleAction(int time, std::unique_ptr<Action> action);
 
+  std::set<std::pair<feature_id_t, binary_id_t>>& featuresInProgress() {
+    return features_in_progress_;
+  }
+
+  std::set<binary_id_t> binariesForFeature(feature_id_t feature_id) const;
+
+  std::shared_ptr<ProblemData> problemData() const {
+    return data_;
+  }
+
  private:
-  State(std::istream& input);
-  void readServices(std::istream& input);
-  void readFeatures(std::istream& input);
+  State(std::istream& input) : data_(ProblemData::readFromStream(input)) {
+    copyFromData();
+  }
+  
+  void copyFromData();
   void processScheduledActions();
 
   int cur_time_ = 0;
   int cur_score_ = 0;
-  int time_limit_;
-  int eng_count_;
-  int service_count_;
-  int binary_count_;
-  int feature_count_;
-  int binary_creation_time_;
+  std::shared_ptr<ProblemData> data_;
 
   BinaryMaintainer binary_maintainer_;
   FeatureMaintainer feature_maintainer_;
   IdMaintainer engineer_maintainer_;
   IdMaintainer service_maintainer_;
+
+  std::set<std::pair<feature_id_t, binary_id_t>> features_in_progress_;
 
   EventQueue<std::unique_ptr<Action>> scheduled_actions_;
 };

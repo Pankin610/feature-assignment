@@ -20,6 +20,14 @@ class FeatureMaintainer {
     return feature_by_id_[id];
   }
 
+  const Feature& getFeature(feature_id_t id) const {
+    return feature_by_id_[id];
+  }
+
+  std::string getFeatureName(feature_id_t id) const {
+    return id_maintainer_.getName(id);
+  }
+
   bool implementInBinary(feature_id_t id, const Binary& binary);
 
   void implement(feature_id_t id) {

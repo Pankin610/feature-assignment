@@ -1,48 +1,13 @@
 #include "state.h"
+#include "problem_data.h"
 
 #include <istream>
 
-State::State(std::istream& input) {
-  input >> time_limit_;
-  input >> eng_count_;
-  engineer_maintainer_ = IdMaintainer(eng_count_);
-  input >> service_count_;
-  input >> binary_count_;
-  binary_maintainer_ = BinaryMaintainer(binary_count_);
-  input >> feature_count_;
-  input >> binary_creation_time_;
-
-  readServices(input);
-  readFeatures(input);
-}
-
-void State::readServices(std::istream& input) {
-  for (int i = 0; i < service_count_; i++) {
-    std::string name;
-    binary_id_t bin_id;
-    input >> name;
-    input >> bin_id;
-
-    service_id_t id = serviceMaintainer().addByName(name);
-    binaryMaintainer().getBinary(bin_id).services().insert(id);
-  }
-}
-
-void State::readFeatures(std::istream& input) {
-  for (int i = 0; i < feature_count_; i++) {
-    std::string name;
-    int num_services_needed;
-    int difficulty;
-    int users;
-
-    input >> name >> num_services_needed >> difficulty >> users;
-    Feature& f = featureMaintainer().getFeature(featureMaintainer().addFeature(name, difficulty, users));
-    for (int j = 0; j < num_services_needed; j++) {
-      std::string service_name;
-      input >> service_name;
-      f.services().insert(serviceMaintainer().addByName(service_name));
-    }
-  }
+void State::copyFromData() {
+  binary_maintainer_ = data_->binaryMaintainer();
+  engineer_maintainer_ = data_->engineerMaintainer();
+  feature_maintainer_ = data_->featureMaintainer();
+  service_maintainer_ = data_->serviceMaintainer();
 }
 
 void State::advanceTime(int t) {
@@ -66,4 +31,12 @@ void State::processScheduledActions() {
 
 void State::scheduleAction(int time, std::unique_ptr<Action> action) {
   scheduled_actions_.addEvent(time, std::move(action));
+}
+
+std::set<binary_id_t> State::binariesForFeature(feature_id_t feature_id) const {
+  std::set<binary_id_t> binaries;
+  for (service_id_t service : featureMaintainer().getFeature(feature_id).services()) {
+    binaries.insert(binaryMaintainer().getBinaryIdForService(service));
+  }
+  return binaries;
 }

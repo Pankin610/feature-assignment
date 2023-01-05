@@ -26,8 +26,8 @@ class BinaryMaintainer {
     return binary_by_id_[id];
   }
 
-  binary_id_t getBinaryIdForService(service_id_t service) {
-    return binary_for_service_[service];
+  binary_id_t getBinaryIdForService(service_id_t service) const {
+    return binary_for_service_.at(service);
   }
 
   int moveService(service_id_t service, binary_id_t new_bin_id) {
