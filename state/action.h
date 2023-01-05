@@ -61,6 +61,8 @@ class StartImplementingFeatureAction : public EngineerAction {
   void apply(State& state) override;
   std::string toString() const override;
 
+  ~StartImplementingFeatureAction() {}
+
  private:
   feature_id_t feature_id_;
   binary_id_t bin_id_;
@@ -75,6 +77,8 @@ class EngineerSleepAction : public EngineerAction {
 
   void apply(State& state) override;
   std::string toString() const override;
+
+  ~EngineerSleepAction() {}
 
  private:
   int duration_;
