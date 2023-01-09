@@ -1,8 +1,8 @@
 #ifndef FEATURE_MAINTAINER_H
 #define FEATURE_MAINTAINER_H
 
-#include "binary.h"
-#include "feature.h"
+#include "core/binary.h"
+#include "core/feature.h"
 #include "id_maintainer.h"
 #include <set>
 #include <queue>

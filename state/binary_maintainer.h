@@ -1,7 +1,7 @@
 #ifndef BINARY_MAINTAINER_H
 #define BINARY_MAINTAINER_H
 
-#include "binary.h"
+#include "core/binary.h"
 #include "id_maintainer.h"
 #include <set>
 #include <queue>

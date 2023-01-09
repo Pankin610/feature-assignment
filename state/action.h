@@ -2,8 +2,8 @@
 #define ACTION_H
 
 #include "state.h"
-#include "feature.h"
-#include "types.h"
+#include "core/feature.h"
+#include "core/types.h"
 #include "problem_data.h"
 #include <memory>
 

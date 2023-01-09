@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <optional>
 
-#include "types.h"
+#include "core/types.h"
 #include "event_queue.h"
 
 class IdMaintainer {

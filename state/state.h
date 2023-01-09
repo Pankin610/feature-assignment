@@ -3,7 +3,7 @@
 
 #include "binary_maintainer.h"
 #include "feature_maintainer.h"
-#include "types.h"
+#include "core/types.h"
 #include "event_queue.h"
 #include "action.h"
 #include "problem_data.h"

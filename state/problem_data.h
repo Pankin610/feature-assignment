@@ -4,7 +4,7 @@
 #include "id_maintainer.h"
 #include "binary_maintainer.h"
 #include "feature_maintainer.h"
-#include "types.h"
+#include "core/types.h"
 #include <memory>
 #include <istream>
 
