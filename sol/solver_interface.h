@@ -1,7 +1,7 @@
 #ifndef SOLVER_INTERFACE_H
 #define SOLVER_INTERFACE_H
 
-#include "problem_data.h"
+#include "state/problem_data.h"
 #include "solution.h"
 #include <memory>
 

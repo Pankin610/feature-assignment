@@ -1,8 +1,8 @@
 #ifndef ACTION_PRODUCER_H
 #define ACTION_PRODUCER_H
 
-#include "action.h"
-#include "state.h"
+#include "state/action.h"
+#include "state/state.h"
 
 class ActionProducerInterface {
  public:

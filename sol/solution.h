@@ -1,7 +1,7 @@
 #ifndef SOLUTION_H
 #define SOLUTION_H
 
-#include "action.h"
+#include "state/action.h"
 
 #include <memory>
 #include <vector>

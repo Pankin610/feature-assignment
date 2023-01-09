@@ -1,8 +1,8 @@
 #ifndef PRODUCER_BASED_SOLVER_H
 #define PRODUCER_BASED_SOLVER_H
 
-#include "action.h"
-#include "state.h"
+#include "state/action.h"
+#include "state/state.h"
 #include "solver_interface.h"
 #include "action_producer_interface.h"
 #include "solution.h"

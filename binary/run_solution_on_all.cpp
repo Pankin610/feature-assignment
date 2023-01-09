@@ -1,6 +1,6 @@
-#include "producer_based_solver.h"
-#include "first_take_action_producer.h"
-#include "problem_data.h"
+#include "sol/producer_based_solver.h"
+#include "sol/first_take_action_producer.h"
+#include "state/problem_data.h"
 
 #include <iostream>
 
