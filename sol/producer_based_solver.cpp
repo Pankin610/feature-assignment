@@ -11,7 +11,7 @@ std::unique_ptr<Solution> ProducerBasedSolver::solve(std::shared_ptr<ProblemData
 }
 
 bool ProducerBasedSolver::makeAction(State& state) {
-  if (state.curTime() >= state.timeLimit()) {
+  if (state.isFinished()) {
     return false;
   }
 

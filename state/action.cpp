@@ -4,7 +4,7 @@
 #include <sstream>
 
 void ImplementFeatureAction::apply(State& state) {
-  Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
+  const Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
   if (state.featureMaintainer().implementInBinary(feature_id_, binary)) {
     int time_in_prod = std::max<int>(0, state.timeLimit() - time_done_);
     state.score() += state.featureMaintainer().getFeature(feature_id_).users() * time_in_prod;
@@ -14,10 +14,11 @@ void ImplementFeatureAction::apply(State& state) {
     throw std::runtime_error("Feature not in progress of implementation.");
   }
   state.featuresInProgress().erase(it);
+  state.binaryMaintainer().stopWorkingOnBinary(bin_id_);
 }
 
 void StartImplementingFeatureAction::apply(State& state) {
-  Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
+  const Binary& binary = state.binaryMaintainer().getBinary(bin_id_);
   if (state.featuresInProgress().find(std::make_pair(feature_id_, bin_id_)) != state.featuresInProgress().end()) {
     throw std::runtime_error("Feature already in progress in this binary.");
   }
@@ -34,6 +35,7 @@ void StartImplementingFeatureAction::apply(State& state) {
     time_when_done, 
     std::make_unique<ImplementFeatureAction>(feature_id_, bin_id_, time_when_done)
   );
+  state.binaryMaintainer().workOnBinary(bin_id_);
 }
 
 std::string StartImplementingFeatureAction::toString() const {
