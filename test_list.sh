@@ -1,0 +1,2 @@
+tests=("a_example.in.txt" "b_breadth_of_choice.in.txt" "c_constrained_optimisation.in.txt" "d_distinction.in.txt" "e_expectation_maximisation.in.txt" "f_five_thousand.in.txt")
+test_dir="hashcode_tests"
