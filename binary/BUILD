@@ -1,6 +1,6 @@
 cc_binary(
-    name = "run_solution_on_all",
-    srcs = ["run_solution_on_all.cpp"],
+    name = "run_solution",
+    srcs = ["run_solution.cpp"],
     deps = [
         "//state:state",
         "//sol:producer_based_solver",
