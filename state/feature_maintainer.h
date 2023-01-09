@@ -42,6 +42,10 @@ class FeatureMaintainer {
     id_maintainer_.advanceTime(days);
   }
 
+  int numFeatures() const {
+    return id_maintainer_.numIds();
+  }
+
  private:
   IdMaintainer id_maintainer_;
   std::vector<Feature> feature_by_id_;

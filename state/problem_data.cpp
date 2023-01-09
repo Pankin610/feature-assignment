@@ -44,3 +44,12 @@ void ProblemData::readFeatures(std::istream& input) {
     }
   }
 }
+
+std::ostream& operator<<(std::ostream& out, const ProblemData& data) {
+  out << "Time limit: " << data.timeLimit() << "\n";
+  out << "Engineer count: " << data.engineerMaintainer().numIds() << "\n";
+  out << "Feature count: " << data.featureMaintainer().numFeatures() << "\n";
+  out << "Binary count: " << data.binaryMaintainer().numBinaries() << "\n";
+  out << "Service count: " << data.serviceMaintainer().numIds() << "\n";
+  return out;
+}

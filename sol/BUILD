@@ -47,3 +47,13 @@ cc_library(
         "//state:state"
     ]
 )
+
+cc_library(
+    name = "ordered_feature_implementation_producer",
+    hdrs = ["ordered_feature_implementation_producer.h"],
+    srcs = ["ordered_feature_implementation_producer.cpp"],
+    deps = [
+        ":action_producer_interface",
+        "//state:state"
+    ]
+)

@@ -26,6 +26,10 @@ class BinaryMaintainer {
     return binary_by_id_[id];
   }
 
+  const Binary& getBinary(binary_id_t id) const {
+    return binary_by_id_.at(id);
+  }
+
   void addService(binary_id_t bin_id, service_id_t service_id) {
     binary_for_service_[service_id] = bin_id;
     getBinary(bin_id).services().insert(service_id);

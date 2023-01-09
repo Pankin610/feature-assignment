@@ -7,6 +7,7 @@
 #include "core/types.h"
 #include <memory>
 #include <istream>
+#include <ostream>
 
 class ProblemData {
  public:
@@ -46,7 +47,7 @@ class ProblemData {
   int timeLimit() const {
     return time_limit_;
   }
-  
+
  private:
   ProblemData(std::istream& input);
   void readServices(std::istream& input);
@@ -64,5 +65,7 @@ class ProblemData {
   IdMaintainer engineer_maintainer_;
   IdMaintainer service_maintainer_;
 };
+
+std::ostream& operator<<(std::ostream& out, const ProblemData& data);
 
 #endif

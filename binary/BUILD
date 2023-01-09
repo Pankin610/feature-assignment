@@ -4,6 +4,6 @@ cc_binary(
     deps = [
         "//state:state",
         "//sol:producer_based_solver",
-        "//sol:first_take_action_producer"
+        "//sol:ordered_feature_implementation_producer"
     ]
 )
