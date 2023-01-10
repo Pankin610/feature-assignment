@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "feature_maintainer.h"
+#include "state/feature_maintainer.h"
 
 TEST(FeatureMaintainerTests, BasicTest) {
   FeatureMaintainer maintainer;

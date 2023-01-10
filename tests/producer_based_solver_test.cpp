@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "problem_data.h"
-#include "first_take_action_producer.h"
-#include "producer_based_solver.h"
-#include "solution.h"
+#include "state/problem_data.h"
+#include "sol/first_take_action_producer.h"
+#include "sol/producer_based_solver.h"
+#include "sol/solution.h"
 
 #include <fstream>
 
 TEST(ProducerBasedSolverTests, TestFromStatement) {
-  std::ifstream inp("./hashcode_tests/a_example.in.txt");
+  std::ifstream inp("hashcode_tests/a_example.in.txt");
   auto data = ProblemData::readFromStream(inp);
   EXPECT_EQ(data->binaryMaintainer().numBinaries(), 3);
 

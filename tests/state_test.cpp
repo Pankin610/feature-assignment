@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "state.h"
-#include "action.h"
-#include "problem_data.h"
+#include "state/state.h"
+#include "state/action.h"
+#include "state/problem_data.h"
 #include <string>
 
 TEST(StateTests, BasicTest) {
@@ -80,8 +80,6 @@ TEST(StateTests, TestFromStatement) {
     /*feature_id=*/bar_id,
     /*bin_id=*/2,
     /*data=*/state.problemData());
-  action3.apply(state);
-
   int time_for_bar = std::max<int>(
     bar.difficulty() + 
       state.binaryMaintainer().getBinary(2).services().size() + 
@@ -90,6 +88,8 @@ TEST(StateTests, TestFromStatement) {
       state.binaryMaintainer().getBinary(1).services().size() -
       state.curTime()
   );
+  
+  action3.apply(state);
   state.advanceTime(time_for_bar);
   EXPECT_TRUE(unimplemented_features.empty());
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "binary_maintainer.h"
+#include "state/binary_maintainer.h"
 
 TEST(BinaryMaintainerTests, BasicTest) {
   BinaryMaintainer maintainer(/*n=*/5);
